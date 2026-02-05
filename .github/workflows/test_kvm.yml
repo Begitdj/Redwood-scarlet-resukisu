@@ -62,9 +62,7 @@ jobs:
             -e CONFIG_VSOCKETS \
             -d CONFIG_LTO_CLANG \
             -d CONFIG_LTO_CLANG_THIN \
-            -d CONFIG_LTO \
-            --set-val CONFIG_KSU_EXPECTED_SIZE 0 \
-            --set-str CONFIG_KSU_EXPECTED_HASH ""
+            -d CONFIG_LTO 
 
         # 4. Обновляем конфиг
         make O=out ARCH=arm64 LLVM=1 LLVM_IAS=1 olddefconfig

@@ -38,15 +38,17 @@ jobs:
         export KBUILD_BUILD_HOST="Redwood-Build"
         export PATH=$GITHUB_WORKSPACE/compiler/clang/bin:$PATH
         
-        # 1. Генерируем конфиг
-        make O=out ARCH=arm64 vendor/xiaomi-qgki_defconfig vendor/redwood.config
-        
-        # 2. УБИВАЕМ QUIET в исходниках DTS (автоматически!)
-        # Ищем файлы dts/dtsi, где есть bootargs и quiet, и удаляем quiet
+        # 1. ОБЪЕДИНЯЕМ КОНФИГИ (ПРАВИЛЬНЫЙ СПОСОБ)
+        # Сначала копируем основной конфиг GKI
+        cp arch/arm64/configs/vendor/xiaomi-qgki_defconfig out/.config
+        # Затем дописываем в конец конфиг для нашего устройства (redwood)
+        cat arch/arm64/configs/vendor/redwood.config >> out/.config
+        # И говорим make "привести в порядок" получившуюся смесь
+        make O=out ARCH=arm64 olddefconfig
+
+        # 2. АВТОМАТИЧЕСКАЯ ПРАВКА DTS: УБИРАЕМ QUIET, ДОБАВЛЯЕМ DEBUG+KVM
         grep -rRl "bootargs" arch/arm64/boot/dts | xargs sed -i 's/quiet//g'
-        # Добавляем нужные флаги в bootargs (если их там нет)
-        # Это хардкорный метод: замена закрывающей кавычки на наши флаги + кавычка
-        grep -rRl "bootargs" arch/arm64/boot/dts | xargs sed -i 's/";/ debug kvm-arm.mode=protected";/g'
+        grep -rRl "bootargs" arch/arm64/boot/dts | xargs sed -i 's|";| debug kvm-arm.mode=protected";|g'
         
         # 3. Настраиваем флаги ядра (.config)
         ./scripts/config --file out/.config \
@@ -62,12 +64,12 @@ jobs:
             -e CONFIG_VHOST_NET \
             -e CONFIG_VSOCKETS \
             -d CONFIG_LTO_CLANG \
-            -d CONFIG_LTO_CLANG_THIN \
-            -d CONFIG_LTO 
+            --set-val CONFIG_KSU_EXPECTED_SIZE 0 \
+            --set-str CONFIG_KSU_EXPECTED_HASH ""
 
-        # 4. Обновляем конфиг
+        # 4. Финальное обновление конфига
         make O=out ARCH=arm64 LLVM=1 LLVM_IAS=1 olddefconfig
-
+        
     - name: Patch ReSukiSU (Manual Hooks)
       run: |
         if [ -d "kernel" ]; then cd kernel; fi

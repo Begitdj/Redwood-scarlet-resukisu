@@ -1,0 +1,19 @@
+- name: DEBUG - List available configs
+      run: |
+        # Проверим, в какой папке мы работаем (должна быть папка ядра)
+        pwd
+
+        echo "--- list"
+        ls -R
+        
+        # Проверим содержимое папки configs
+        echo "--- Listing arch/arm64/configs/ ---"
+        ls -R arch/arm64/configs/
+        
+        # Если ты используешь конструкцию if [ -d "kernel" ]; then cd kernel; fi
+        # то ls будет выполняться из корня репозитория, а не из папки kernel.
+        # Поэтому проверим и там:
+        if [ -d "kernel" ]; then 
+          echo "--- Listing kernel/arch/arm64/configs/ ---"
+          ls -R kernel/arch/arm64/configs/
+        fi

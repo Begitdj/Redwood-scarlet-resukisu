@@ -33,10 +33,15 @@ if [ "$CHOICE" == "2" ]; then
         -e CONFIG_DEBUG_KERNEL \
         -e CONFIG_KALLSYMS \
         -e CONFIG_KALLSYMS_ALL
+        -d CONFIG_STRICT_KERNEL_RWX \
+        -d CONFIG_STRICT_MODULE_RWX
 else
     echo "Выключаем KPM..."
     ./scripts/config --file out/.config \
-        -d CONFIG_KPM
+        -d CONFIG_KPM \
+        -d CONFIG_KALLSYMS_ALL \
+        -e CONFIG_STRICT_KERNEL_RWX \
+        -e CONFIG_STRICT_MODULE_RWX
 fi
 
 echo -e "${GREEN}--- 2. Синхронизируем зависимости ---${NC}"

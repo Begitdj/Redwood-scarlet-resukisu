@@ -161,3 +161,9 @@ arch/arm/boot/dts/vendor
 
 # build log
 log.txt
+# Custom
+AnyKernel3/
+compiler/
+*.zip
+*.rej
+*.orig

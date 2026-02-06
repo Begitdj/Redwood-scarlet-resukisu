@@ -30,6 +30,12 @@ jobs:
         chmod +x antman
         ./antman -S
 
+    - name: SukiSu
+      run: |
+
+        rm -rf drivers/kernelsu KernelSU
+        curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
+
     - name: Configure Kernel & Remove QUIET
       run: |
         

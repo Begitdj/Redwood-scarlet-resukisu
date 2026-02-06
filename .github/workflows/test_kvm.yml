@@ -32,7 +32,6 @@ jobs:
 
     - name: Configure Kernel & Remove QUIET
       run: |
-        if [ -d "kernel" ]; then cd kernel; fi
         
         export KBUILD_BUILD_USER="Vjfgff"
         export KBUILD_BUILD_HOST="Redwood-Build"
@@ -63,9 +62,7 @@ jobs:
             -e CONFIG_KVM_ARM_HOST \
             -e CONFIG_VHOST_NET \
             -e CONFIG_VSOCKETS \
-            -d CONFIG_LTO_CLANG \
-            --set-val CONFIG_KSU_EXPECTED_SIZE 0 \
-            --set-str CONFIG_KSU_EXPECTED_HASH ""
+            -d CONFIG_LTO_CLANG
 
         # 4. Финальное обновление конфига
         make O=out ARCH=arm64 LLVM=1 LLVM_IAS=1 olddefconfig

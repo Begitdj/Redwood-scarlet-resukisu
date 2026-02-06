@@ -99,7 +99,7 @@ jobs:
             CROSS_COMPILE=aarch64-linux-gnu- \
             CROSS_COMPILE_COMPAT=arm-linux-gnueabi- \
             KCFLAGS="-Wno-implicit-function-declaration -Wno-int-conversion" \
-            Image dtbs dtbo.img
+            Image dtbs
 
     - name: Package AnyKernel3
       run: |

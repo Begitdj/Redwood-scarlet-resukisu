@@ -17,7 +17,8 @@ jobs:
 
         echo "---- list2"
         ls -R ..
-        
+        echo "---- list3"
+        ls -R ../..
         # Проверим содержимое папки configs
         echo "--- Listing arch/arm64/configs/ ---"
         ls -R arch/arm64/configs/

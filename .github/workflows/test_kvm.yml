@@ -82,9 +82,12 @@ jobs:
             echo "CRITICAL ERROR: ReSukiSU not found in drivers/kernelsu!"
             exit 1
         fi
+        # Fix 1: Change struct assignment (.iterate = -> .iterate_shared =)
         sed -i 's/\.iterate\s*=\s*/.iterate_shared = /g' drivers/kernelsu/file_wrapper.c
-        # Replace the direct function call (->iterate(...) -> ->iterate_shared(...))
-        sed -i 's/->iterate(/->iterate_shared(/g' drivers/kernelsu/file_wrapper.c
+        
+        # Fix 2: Change member access (->iterate -> ->iterate_shared)
+        # Using \b to ensure we match the word boundary, fixing both function calls AND the ternary check
+        sed -i 's/->iterate\b/->iterate_shared/g' drivers/kernelsu/file_wrapper.c
         
     - name: Build Kernel
       run: |

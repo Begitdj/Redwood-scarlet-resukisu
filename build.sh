@@ -32,7 +32,7 @@ if [ "$CHOICE" == "2" ]; then
         -e CONFIG_KPM \
         -e CONFIG_DEBUG_KERNEL \
         -e CONFIG_KALLSYMS \
-        -e CONFIG_KALLSYMS_ALL
+        -e CONFIG_KALLSYMS_ALL \
         -d CONFIG_STRICT_KERNEL_RWX \
         -d CONFIG_STRICT_MODULE_RWX
 else

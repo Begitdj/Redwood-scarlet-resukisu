@@ -36,6 +36,7 @@ jobs:
         export KBUILD_BUILD_USER="Vjfgff"
         export KBUILD_BUILD_HOST="Redwood-Build"
         export PATH=$GITHUB_WORKSPACE/compiler/clang/bin:$PATH
+        mkdir -p out
         
         # 1. ОБЪЕДИНЯЕМ КОНФИГИ (ПРАВИЛЬНЫЙ СПОСОБ)
         # Сначала копируем основной конфиг GKI

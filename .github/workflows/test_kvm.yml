@@ -125,9 +125,11 @@ jobs:
         cd AnyKernel3
         zip -r9 ../Scarlet-KVM-Redwood.zip * -x .git README.md *placeholder
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+    - name: Create Release and Upload Artifact
+      uses: softprops/action-gh-release@v1
+      if: success()
       with:
-        name: Scarlet-KVM-Redwood
-        path: |
-          **/Scarlet-KVM-Redwood.zip
+        files: Scarlet-KVM-Redwood.zip
+        tag_name: KVM-Test-Build-${{ github.run_id }}
+        name: Scarlet KVM Test Build ${{ github.run_id }}
+        draft: true # Черновик, чтобы ты мог его проверить перед публикацией

@@ -16,6 +16,11 @@
 
 #define IOWAIT_BOOST_MIN	(SCHED_CAPACITY_SCALE / 8)
 
+/* Battery-lean default for schedutil rate limiting (in microseconds) */
+#ifndef SU_DEFAULT_RATE_LIMIT_US
+#define SU_DEFAULT_RATE_LIMIT_US 5000
+#endif
+
 struct sugov_tunables {
 	struct gov_attr_set	attr_set;
 	unsigned int		rate_limit_us;
@@ -785,7 +790,7 @@ static int sugov_init(struct cpufreq_policy *policy)
 		goto stop_kthread;
 	}
 
-	tunables->rate_limit_us = 2000;
+	tunables->rate_limit_us = SU_DEFAULT_RATE_LIMIT_US;
 
 	policy->governor_data = sg_policy;
 	sg_policy->tunables = tunables;

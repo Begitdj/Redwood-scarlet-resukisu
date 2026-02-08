@@ -129,14 +129,33 @@ static void _sde_core_perf_calc_crtc(struct sde_kms *kms,
 	perf->core_clk_rate =
 			sde_crtc_get_property(sde_cstate, CRTC_PROP_CORE_CLK);
 
-	if (!sde_cstate->bw_control) {
-		for (i = 0; i < SDE_POWER_HANDLE_DBUS_ID_MAX; i++) {
-			perf->bw_ctl[i] = kms->catalog->perf.max_bw_high *
-					1000ULL;
-			perf->max_per_pipe_ib[i] = perf->bw_ctl[i];
-		}
-		perf->core_clk_rate = kms->perf.max_core_clk_rate;
-	} else if (kms->perf.perf_tune.mode == SDE_PERF_MODE_MINIMUM) {
+        if (!sde_cstate->bw_control) {
+                /*
+                 * battery: when userspace BW control is disabled, avoid voting
+                 * absolute max bandwidth/clock. Use conservative "low" limits
+                 * from catalog when available.
+                 */
+                u32 bw_kbps = kms->catalog->perf.max_bw_low;
+
+                for (i = 0; i < SDE_POWER_HANDLE_DBUS_ID_MAX; i++) {
+                        if (bw_kbps)
+                                perf->bw_ctl[i] = (u64)bw_kbps * 1000ULL;
+                        else
+                                perf->bw_ctl[i] =
+                                        kms->catalog->perf.max_bw_high *
+                                        1000ULL;
+
+                        perf->max_per_pipe_ib[i] = perf->bw_ctl[i];
+                }
+
+                if (kms->perf.perf_tune.min_core_clk)
+                        perf->core_clk_rate =
+                                kms->perf.perf_tune.min_core_clk;
+                else
+                        perf->core_clk_rate =
+                                kms->perf.max_core_clk_rate;
+
+        } else if (kms->perf.perf_tune.mode == SDE_PERF_MODE_MINIMUM) {
 		for (i = 0; i < SDE_POWER_HANDLE_DBUS_ID_MAX; i++) {
 			perf->bw_ctl[i] = 0;
 			perf->max_per_pipe_ib[i] = 0;

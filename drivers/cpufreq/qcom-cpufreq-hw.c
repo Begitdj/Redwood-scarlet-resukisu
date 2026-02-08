@@ -361,9 +361,9 @@ static int qcom_cpu_resources_init(struct platform_device *pdev,
 		dev_err(dev, "Domain-%d failed to read LUT\n", index);
 		return ret;
 	}
-
-	perf_lock_support = of_property_read_bool(dev->of_node,
-					"qcom,perf-lock-support");
+        perf_lock_support = false;
+	/*perf_lock_support = of_property_read_bool(dev->of_node,
+					"qcom,perf-lock-support"); */
 	if (perf_lock_support) {
 		snprintf(pdmem_name, sizeof(pdmem_name), "pdmem-domain%d",
 								index);

@@ -26,6 +26,12 @@ jobs:
           ./antman -S
 
 
+      - name: ReSukiSU
+        run: |
+          echo "symlink problem fix"
+          rm -rf KernelSU drivers/kernelsu
+          curl -LSs "https://raw.githubusercontent.com/Begitdj/ReSukiSU/main/kernel/setup.sh" | bash
+          
       - name: Build via build.sh
         run: |
           chmod +x build.sh

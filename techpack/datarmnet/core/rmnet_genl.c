@@ -153,11 +153,10 @@ void rmnet_boost_for_pid(pid_t pid, int boost_enable,
 				continue;
 
 			/* PID Match found */
-			rm_err("FuckingKernel: no  boost for pid %d for %d ms",
+			rm_err("CORE_BOOST: enable boost for pid %d for %d ms",
 			       pid, boost_period);
-			node_p->sched_boost_enable = 0;
-			node_p->sched_boost_period_ms = 0;
-                        node_p->sched_boost_remaining_ms = 0;
+			node_p->sched_boost_enable = boost_enable;
+			node_p->sched_boost_period_ms = boost_period;
 			break;
 		}
 

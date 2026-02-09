@@ -41,6 +41,4 @@ make O=out ARCH=arm64 LLVM=1 LLVM_IAS=1 vendor/xiaomi-qgki_defconfig vendor/redw
 
 make O=out ARCH=arm64 LLVM=1 LLVM_IAS=1 olddefconfig
 
-make O=out ARCH=arm64 LLVM=1 LLVM_IAS=1 olddefconfig
-
 make O=out ARCH=arm64 LLVM=1 LLVM_IAS=1 -j$(nproc) Image dtbs

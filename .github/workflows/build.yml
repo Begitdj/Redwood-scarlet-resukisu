@@ -69,10 +69,10 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: success()
         with:
-          tag_name: Build-${{ github.run_id }}
-          name: Build ${{ github.run_id }}
+          tag_name: Battery-Build-${{ github.run_id }}
+          name: Battery-Build ${{ github.run_id }}
           draft: false
-          prerelease: false
+          prerelease: true
           files: |
             artifacts/kernel
             artifacts/dtbo.img

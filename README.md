@@ -1,4 +1,5 @@
 # based on https://github.com/jomadeto/scarlet_xiaomi_sm7325
+Tested on crdroid
 # How do I submit patches to Android Common Kernels
 
 1. BEST: Make all of your changes to upstream Linux. If appropriate, backport to the stable releases.
